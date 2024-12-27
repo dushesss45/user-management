@@ -1,66 +1,152 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# Описание тестового задания
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+## Вводные данные
 
-## About Laravel
+### Конфигурация:
+- **PHP**: 8.0
+- **MySQL**: 8
+- **NGINX**
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+[Исходные данные на GitHub Gist](https://gist.github.com/f1uder/91f428ceedcc7ea8ef66a71b2128b9f7)
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+---
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+## Задание:
+Создать REST API для управления пользователями с использованием фреймворка Laravel.
 
-## Learning Laravel
+---
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+### Требования:
+1. Реализовать REST API с возможностью:
+   - Получения списка пользователей с пагинацией.
+   - Получения информации об отдельном пользователе по ID.
+   - Создания нового пользователя.
+   - Обновления данных существующего пользователя (поля: `name`, `ip`, `comment`, `password`).
+   - Удаления пользователя.
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+2. **Модель пользователя**:
+   - Расширить стандартную модель полями:
+      - `ip` (тип `string`, nullable) — комментарий: "IP-адрес пользователя".
+      - `comment` (тип `text`, nullable) — комментарий: "Комментарий к пользователю".
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains over 2000 video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+3. **Обязательные компоненты**:
+   - **Миграция** для создания таблицы `users` с указанными полями.
+   - **Сидер** для заполнения таблицы тестовыми данными (50 записей).
+   - **Ресурсный контроллер** для обработки всех маршрутов.
+   - Обработка ошибок:
+      - При запросе несуществующего пользователя возвращать статус `404` и соответствующее сообщение.
+   - Возврат JSON-ответов с унифицированной структурой:
+     ```json
+     {
+         "status": "success",
+         "data": { /* данные или массив данных */ },
+         "message": null
+     }
+     ```
 
-## Laravel Sponsors
+4. **Плюсом будет**:
+   - Возможность поиска по имени при запросе списка пользователей.
+   - Возможность сортировки по имени (по возрастанию/убыванию).
+   - Валидация входных данных (Laravel Validation Rules).
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the Laravel [Patreon page](https://patreon.com/taylorotwell).
+---
 
-### Premium Partners
+### Тесты:
+- Написать **Feature-тесты** для проверки работы каждого из маршрутов:
+   - `GET /users` — Проверка получения списка пользователей.
+   - `GET /users/{id}` — Проверка получения данных пользователя.
+   - `POST /users` — Проверка создания нового пользователя.
+   - `PUT /users/{id}` — Проверка обновления данных пользователя.
+   - `DELETE /users/{id}` — Проверка удаления пользователя.
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Cubet Techno Labs](https://cubettech.com)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[Many](https://www.many.co.uk)**
-- **[Webdock, Fast VPS Hosting](https://www.webdock.io/en)**
-- **[DevSquad](https://devsquad.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[OP.GG](https://op.gg)**
-- **[WebReinvent](https://webreinvent.com/?utm_source=laravel&utm_medium=github&utm_campaign=patreon-sponsors)**
-- **[Lendio](https://lendio.com)**
+---
 
-## Contributing
+## Инструкции по развертыванию через Docker:
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+1. Склонируйте репозиторий:
+   ```bash
+   git clone https://github.com/dushesss45/user-management.git
+   cd user-management
+   ```
 
-## Code of Conduct
+2. Запустите Docker-контейнеры:
+   ```bash
+   docker-compose up -d --build
+   ```
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+3. Выполните миграции и заполните базу данных тестовыми данными:
+   ```bash
+   docker exec -it laravel-app php artisan migrate --seed
+   ```
 
-## Security Vulnerabilities
+4. API будет доступно по адресу:
+   ```plaintext
+   http://localhost:8080
+   ```
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+---
 
-## License
+### Тестирование:
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+Для запуска тестов выполните команду:
+```bash
+docker exec -it laravel-app php artisan test
+```
+
+---
+
+## Инструкции по Swagger:
+1. Документация API сгенерирована в `swagger.yaml`.
+2. Открыть документацию можно по адресу:
+   ```plaintext
+   http://localhost:8080/api-docs
+   ```
+
+---
+
+## Ожидаемый результат:
+- Репозиторий на GitHub с выполненным тестовым заданием.
+- Инструкции для запуска и тестирования.
+- Полностью функционирующее REST API.
+- Пройденные тесты, подтверждающие работоспособность.
+
+---
+
+## Пример структуры проекта:
+
+```plaintext
+.
+├── app/
+│   ├── Http/
+│   │   ├── Controllers/
+│   │   │   └── UserController.php
+│   │   └── Middleware/
+│   ├── Models/
+│   │   └── User.php
+│   ├── Services/
+│       └── UserService.php
+├── database/
+│   ├── factories/
+│   │   └── UserFactory.php
+│   ├── migrations/
+│   │   └── 2024_12_27_000000_create_users_table.php
+│   ├── seeders/
+│       └── UserSeeder.php
+├── public/
+│   └── swagger/
+│       ├── index.html
+│       └── swagger.yaml
+├── tests/
+│   ├── Feature/
+│   │   └── UserControllerTest.php
+│   └── Unit/
+│       └── ExampleTest.php
+├── docker-compose.yml
+├── .env
+└── README.md
+```
+
+---
+
+## Затраченное время:
+~6 часов, из них 1 час на развертывание проекта, 2 часа написание кода, 1 час отладки, 2 часа документация

@@ -1,0 +1,258 @@
+openapi: 3.0.0
+info:
+  title: User Management API
+  version: 1.0.0
+  description: REST API для управления пользователями.
+servers:
+  - url: http://localhost:8080
+    description: Локальный сервер API
+paths:
+  /users:
+    get:
+      summary: Получение списка пользователей
+      description: Возвращает список пользователей с возможностью пагинации, поиска и сортировки.
+      parameters:
+        - name: search
+          in: query
+          description: Поиск по имени пользователя.
+          required: false
+          schema:
+            type: string
+        - name: sort
+          in: query
+          description: Сортировка по имени (asc или desc).
+          required: false
+          schema:
+            type: string
+            enum: [asc, desc]
+        - name: perPage
+          in: query
+          description: Количество пользователей на странице.
+          required: false
+          schema:
+            type: integer
+            default: 10
+      responses:
+        200:
+          description: Успешный ответ.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: success
+                  data:
+                    type: object
+                    properties:
+                      current_page:
+                        type: integer
+                      data:
+                        type: array
+                        items:
+                          $ref: '#/components/schemas/User'
+                      total:
+                        type: integer
+    post:
+      summary: Создание нового пользователя
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  example: John Doe
+                email:
+                  type: string
+                  format: email
+                  example: john@example.com
+                password:
+                  type: string
+                  format: password
+                  example: securepassword
+                ip:
+                  type: string
+                  format: ipv4
+                  example: 192.168.1.1
+                comment:
+                  type: string
+                  example: This is a comment
+              required:
+                - name
+                - email
+                - password
+      responses:
+        201:
+          description: Пользователь создан.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: success
+                  data:
+                    $ref: '#/components/schemas/User'
+
+  /users/{id}:
+    get:
+      summary: Получение пользователя
+      description: Возвращает данные пользователя по ID.
+      parameters:
+        - name: id
+          in: path
+          description: ID пользователя
+          required: true
+          schema:
+            type: integer
+      responses:
+        200:
+          description: Успешный ответ.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: success
+                  data:
+                    $ref: '#/components/schemas/User'
+        404:
+          description: Пользователь не найден.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: error
+                  message:
+                    type: string
+    put:
+      summary: Обновление пользователя
+      parameters:
+        - name: id
+          in: path
+          description: ID пользователя
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  example: Updated Name
+                password:
+                  type: string
+                  format: password
+                  example: newpassword
+                ip:
+                  type: string
+                  format: ipv4
+                  example: 192.168.1.2
+                comment:
+                  type: string
+                  example: Updated comment
+      responses:
+        200:
+          description: Успешное обновление.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: success
+                  data:
+                    $ref: '#/components/schemas/User'
+        404:
+          description: Пользователь не найден.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: error
+                  message:
+                    type: string
+    delete:
+      summary: Удаление пользователя
+      parameters:
+        - name: id
+          in: path
+          description: ID пользователя
+          required: true
+          schema:
+            type: integer
+      responses:
+        200:
+          description: Пользователь успешно удалён.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: success
+                  message:
+                    type: string
+                    example: User deleted successfully
+        404:
+          description: Пользователь не найден.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: error
+                  message:
+                    type: string
+
+components:
+  schemas:
+    User:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 1
+        name:
+          type: string
+          example: John Doe
+        email:
+          type: string
+          format: email
+          example: john@example.com
+        ip:
+          type: string
+          format: ipv4
+          example: 192.168.1.1
+        comment:
+          type: string
+          example: This is a comment
+        created_at:
+          type: string
+          format: date-time
+          example: 2024-12-26T17:35:43.000000Z
+        updated_at:
+          type: string
+          format: date-time
+          example: 2024-12-26T17:35:43.000000Z
